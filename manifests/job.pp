@@ -551,7 +551,7 @@ define backup::job (
 
   cron { "${name}-backup":
     ensure   => $ensure,
-    command  => "${gem_bin_path}/backup perform --trigger ${_name} --config-file '/etc/backup/config.rb' --tmp-path ${tmp_path}",
+    command  => "${gem_bin_path}/backup perform --trigger ${_name} --config-file '/etc/backup/config.rb' --tmp-path ${tmp_path} >> /var/log/cron.backup.${name}.log 2>&1; test $? -gt 1 && (echo 'Error during backup of ${name}:' ; tail -n 50 '/var/log/cron.backup.${name}.log')",
     minute   => $minute,
     hour     => $hour,
     monthday => $monthday,
